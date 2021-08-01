@@ -1,8 +1,10 @@
 import React from 'react';
-import Image from 'react-bootstrap/Image';
 import axios from 'axios';
+import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import ImgCard from './ImgCard';
+import '../App.css'
 
 export default function GalleryPage() {
 
@@ -14,21 +16,31 @@ export default function GalleryPage() {
     axios.get('http://localhost:3000/allimages').then(res => {
       console.log("resp:", res);
 
-      setImages(res.data.images.Contents)
+      let imgSlice = res.data.images.Contents.slice(0, 40);
+
+      setImages(imgSlice)
     })
 
     console.log("imgs", images);
   }, [])
 
+
+  const expandImage = e => {
+
+  } 
+
   return (
     <div>
 
+    <Container style={{display: 'flex', flexWrap: 'wrap'}}>
     { images.map((el, i) => {
       return (
-        <Image thumbnail  src={`https://danworkpictures.s3.us-east-2.amazonaws.com/${el.Key}`} fluid />
+        
+          <ImgCard source={`https://danworkpictures.s3.us-east-2.amazonaws.com/${el.Key}`} />
+        
       )
     })}
-      {/* <Image fluid src={`https://danworkpictures.s3.us-east-2.amazonaws.com/${images[0].Key}`} /> */}
+    </Container>
     </div>
   )
 }
